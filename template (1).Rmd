@@ -5,6 +5,45 @@ output: github_document
 
 I'm an R Markdown document! 
 
+
+
+```{r,echo= FALSE, message=FALSE}
+library(tidyverse)
+library(janitor)
+```
+## Import some data
+
+I want to import `FAS_litters.csv`
+
+```{r}
+litters_data = read_csv(file = "./datasets/data_import_examples/FAS_litters.csv")
+```
+
+I imported the data set. need better names
+
+```{r}
+names (litters_data)
+
+litters_data= janitor :: clean_names(litters_data)
+```
+::clean_names means shortcut of janitor package functions
+
+```{r}
+litters_data
+head(litters_data)
+tail(litters_data)
+```
+```{r,eval=FALSE}
+view(litters_data)
+```
+
+Here's `skimr`
+
+```{r}
+skimr::skim(litters_data)
+```
+
+
 # Section 1
 
 Here's a **code chunk** that samples from 
