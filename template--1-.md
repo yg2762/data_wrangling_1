@@ -141,6 +141,42 @@ length(samp)
 
     ## [1] 100
 
+``` r
+litters_data = read_csv ( "./datasets/data_import_examples/FAS_litters.csv")
+```
+
+    ## Rows: 49 Columns: 8
+
+    ## ── Column specification ────────────────────────────────────────────────────────
+    ## Delimiter: ","
+    ## chr (2): Group, Litter Number
+    ## dbl (6): GD0 weight, GD18 weight, GD of Birth, Pups born alive, Pups dead @ ...
+
+    ## 
+    ## ℹ Use `spec()` to retrieve the full column specification for this data.
+    ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+
+``` r
+skip=5
+col_names= FALSE
+na= "low8"
+```
+
+``` r
+litters_data = read_csv(file = "./datasets/data_import_examples/FAS_litters.csv",
+  col_types = cols(
+    Group = col_character(),
+    `Litter Number` = col_character(),
+    `GD0 weight` = col_double(),
+    `GD18 weight` = col_double(),
+    `GD of Birth` = col_integer(),
+    `Pups born alive` = col_integer(),
+    `Pups dead @ birth` = col_integer(),
+    `Pups survive` = col_integer()
+  )
+)
+```
+
 # Section 2
 
-I can take the mean of the sample, too! The mean is -0.0684367.
+I can take the mean of the sample, too! The mean is 0.0697964.
