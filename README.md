@@ -2,3 +2,5 @@
 this is a repo corresponding to Data wranglling 1.
 
 change my git settings
+
+set global git name and emial 
