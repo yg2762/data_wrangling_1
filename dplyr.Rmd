@@ -89,7 +89,18 @@ either in Mod8 or Con7
 filter(litters_df, group %in% c("Mod8", "Con7"))
 ```
 
+## `mutate`
 
+```{r}
+mutate(
+  litters_df, 
+  wt_gain = gd18_weight - gd0_weight,
+  group =  str_to_lower(group)
+  )
+```
+
+
+## 
 
 
 
