@@ -379,4 +379,103 @@ mutate(
     ## # … with 39 more rows, and 3 more variables: pups_dead_birth <dbl>,
     ## #   pups_survive <dbl>, wt_gain <dbl>
 
-## 
+## `arrange`
+
+``` r
+arrange(litters_df, pups_born_alive)
+```
+
+    ## # A tibble: 49 × 8
+    ##    group litter_number gd0_weight gd18_weight gd_of_birth pups_born_alive
+    ##    <chr> <chr>              <dbl>       <dbl>       <dbl>           <dbl>
+    ##  1 Con7  #85                 19.7        34.7          20               3
+    ##  2 Low7  #111                25.5        44.6          20               3
+    ##  3 Low8  #4/84               21.8        35.2          20               4
+    ##  4 Con7  #5/4/2/95/2         28.5        44.1          19               5
+    ##  5 Con8  #2/2/95/2           NA          NA            19               5
+    ##  6 Mod7  #3/82/3-2           28          45.9          20               5
+    ##  7 Mod7  #5/3/83/5-2         22.6        37            19               5
+    ##  8 Mod7  #106                21.7        37.8          20               5
+    ##  9 Con7  #5/5/3/83/3-3       26          41.4          19               6
+    ## 10 Con7  #4/2/95/3-3         NA          NA            20               6
+    ## # … with 39 more rows, and 2 more variables: pups_dead_birth <dbl>,
+    ## #   pups_survive <dbl>
+
+## `%>%`
+
+``` r
+litters_data_raw=read_csv("./datasets/data_import_examples/FAS_litters.csv")
+```
+
+    ## Rows: 49 Columns: 8
+
+    ## ── Column specification ────────────────────────────────────────────────────────
+    ## Delimiter: ","
+    ## chr (2): Group, Litter Number
+    ## dbl (6): GD0 weight, GD18 weight, GD of Birth, Pups born alive, Pups dead @ ...
+
+    ## 
+    ## ℹ Use `spec()` to retrieve the full column specification for this data.
+    ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+
+``` r
+litters_clean_names = janitor::clean_names(litters_data_raw)
+litters_data_selected = select(litters_clean_names, gd0_weight:pups_survive)
+litters_mutaed= mutate(litters_data_selected, wt_gain = gd18_weight - gd0_weight)
+litters_without_missing = drop_na(litters_mutaed, gd0_weight)
+litters_without_missing
+```
+
+    ## # A tibble: 34 × 7
+    ##    gd0_weight gd18_weight gd_of_birth pups_born_alive pups_dead_birth
+    ##         <dbl>       <dbl>       <dbl>           <dbl>           <dbl>
+    ##  1       19.7        34.7          20               3               4
+    ##  2       27          42            19               8               0
+    ##  3       26          41.4          19               6               0
+    ##  4       28.5        44.1          19               5               1
+    ##  5       28.5        NA            20               8               0
+    ##  6       28          NA            19               9               0
+    ##  7       17          33.4          19               8               0
+    ##  8       21.4        42.1          19               9               1
+    ##  9       28          45.9          20               5               0
+    ## 10       23.5        NA            19               9               0
+    ## # … with 24 more rows, and 2 more variables: pups_survive <dbl>, wt_gain <dbl>
+
+``` r
+litters_df = 
+  read_csv("./datasets/data_import_examples/FAS_litters.csv") %>% 
+  janitor::clean_names() %>% 
+  select(gd0_weight:pups_survive) %>% 
+  mutate(wt_gain = gd18_weight - gd0_weight) %>% 
+  drop_na(gd0_weight)
+```
+
+    ## Rows: 49 Columns: 8
+
+    ## ── Column specification ────────────────────────────────────────────────────────
+    ## Delimiter: ","
+    ## chr (2): Group, Litter Number
+    ## dbl (6): GD0 weight, GD18 weight, GD of Birth, Pups born alive, Pups dead @ ...
+
+    ## 
+    ## ℹ Use `spec()` to retrieve the full column specification for this data.
+    ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+
+``` r
+litters_df
+```
+
+    ## # A tibble: 34 × 7
+    ##    gd0_weight gd18_weight gd_of_birth pups_born_alive pups_dead_birth
+    ##         <dbl>       <dbl>       <dbl>           <dbl>           <dbl>
+    ##  1       19.7        34.7          20               3               4
+    ##  2       27          42            19               8               0
+    ##  3       26          41.4          19               6               0
+    ##  4       28.5        44.1          19               5               1
+    ##  5       28.5        NA            20               8               0
+    ##  6       28          NA            19               9               0
+    ##  7       17          33.4          19               8               0
+    ##  8       21.4        42.1          19               9               1
+    ##  9       28          45.9          20               5               0
+    ## 10       23.5        NA            19               9               0
+    ## # … with 24 more rows, and 2 more variables: pups_survive <dbl>, wt_gain <dbl>

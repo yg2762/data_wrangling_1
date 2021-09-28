@@ -100,7 +100,56 @@ mutate(
 ```
 
 
-## 
+## `arrange`
+
+```{r}
+arrange(litters_df, pups_born_alive)
+```
+
+## `%>%`
+```{r}
+litters_data_raw=read_csv("./datasets/data_import_examples/FAS_litters.csv")
+
+litters_clean_names = janitor::clean_names(litters_data_raw)
+litters_data_selected = select(litters_clean_names, gd0_weight:pups_survive)
+litters_mutaed= mutate(litters_data_selected, wt_gain = gd18_weight - gd0_weight)
+litters_without_missing = drop_na(litters_mutaed, gd0_weight)
+litters_without_missing
+```
+
+```{r}
+litters_df = 
+  read_csv("./datasets/data_import_examples/FAS_litters.csv") %>% 
+  janitor::clean_names() %>% 
+  select(gd0_weight:pups_survive) %>% 
+  mutate(wt_gain = gd18_weight - gd0_weight) %>% 
+  drop_na(gd0_weight)
+
+litters_df
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
