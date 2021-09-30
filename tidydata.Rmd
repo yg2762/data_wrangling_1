@@ -9,15 +9,14 @@ output: github_document
 library(tidyverse) 
 library(readxl)
 library(haven)
-
 options(tibble.print_min = 5)
 ```
 
 
 ```{r}
 pulse_df = 
-  haven::read_sas("./datasets/public_pulse_data.sas7bdat") %>%
-  janitor::clean_names()
+  haven :: read_sas("./datasets/public_pulse_data.sas7bdat") %>%
+  janitor :: clean_names()
 
 pulse_df
 
@@ -35,11 +34,104 @@ pivot_tidy=
     values_to = "bdi"
   ) %>% 
   mutate(
-    visit = replace(visit, visit =="bl" , "00m"),
+    visit = replace(visit, visit == "bl" , "00m"),
     visit=factor(visit)
   )
+pivot_tidy
+```
+
+
+```{r}
+analysis_df=
+  tibble(
+    groups = c("treatment", "treatment" , "control", "control"),
+    time = c("a", "b", "a","b"),
+    group_mean = c(4,8,3,6)
+  )
+
+analysis_df %>% 
+  pivot_wider(
+    names_from = "time",
+    values_from = "group_mean"
+    
+  )
+
+knitr :: kable(analysis_df)
+```
+alwaysuse `pivot_wider`
+
+
+## bind_rows
+
+import the LotR movie words stuff
+
+```{r}
+fellowship_df =
+  read_excel("./datasets/data_import_examples/LotR_Words.xlsx", range = "B3:D6") %>% 
+  mutate(movie = "fellowship_ring")
+```
+
+
+```{r}
+towers_df =
+  read_excel("./datasets/data_import_examples/LotR_Words.xlsx", range = "F3:H6") %>% 
+  mutate(movie = "two_towers")
+```
+
+```{r}
+return_df =
+  read_excel("./datasets/data_import_examples/LotR_Words.xlsx", range = "J3:L6") %>% 
+  mutate(movie = "return_of_king")
+```
+
+```{r}
+lotr_df=
+  bind_rows(fellowship_df,  towers_df, return_df ) %>% 
+  janitor :: clean_names() %>% 
+  pivot_longer(
+    female:male,
+    names_to= "sex",
+    values_to = "words"
+  ) %>% 
+  relocate (movie)
+
+lotr_df
+```
+
+never use `rbind`, use `bind_rows()`
+
+## joins
+
+FAS data
+
+```{r}
+litters_df=
+  read_csv("./datasets/data_import_examples/FAS_litters.csv") %>% 
+  janitor :: clean_names() %>% 
+  separate (group, into = c("dose", "day_of_tx"),3) %>% 
+  relocate (litter_number) %>% 
+  mutate(dose = str_to_lower(dose))
+  
+litters_df
+  
+  
+pups_df=
+  read_csv("./datasets/data_import_examples/FAS_pups.csv") %>% 
+  janitor :: clean_names() %>% 
+  mutate(sex = recode(sex, `1` = "male",`2` = "female" ))
+pups_df
 
 ```
+
+join these up
+
+```{r}
+fas_df=
+  left_join (pups_df, litters_df, by = "litter_number") %>% 
+  relocate(litter_number, dose, day_of_tx)
+fas_df
+```
+
 
 
 
