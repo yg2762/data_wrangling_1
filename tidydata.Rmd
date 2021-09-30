@@ -1,0 +1,23 @@
+---
+title: "tidy data"
+author: "Yang Gao"
+date: "9/30/2021"
+output: github_document
+---
+
+```{r}
+library(tidyverse) 
+library(readxl)
+library(haven)
+
+options(tibble.print_min = 5)
+```
+
+
+
+
+
+
+
+
+
